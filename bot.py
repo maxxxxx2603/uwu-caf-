@@ -427,6 +427,49 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
     
     await employee_channel.send(embed=embed_welcome)
     
+    # Message explicatif des commandes
+    embed_commandes = discord.Embed(
+        title="📋 Commandes Disponibles",
+        description="Voici les commandes que vous pouvez utiliser :",
+        color=discord.Color.blue()
+    )
+    
+    embed_commandes.add_field(
+        name="☕ /craft",
+        value="**Craft des produits pour le coffre**\n"
+              "Cette commande vous permet de créer des produits et de les ajouter au coffre du café.\n"
+              "• Sélectionnez le produit à crafter\n"
+              "• Indiquez la quantité\n"
+              "• Les produits seront ajoutés à votre compteur personnel et au coffre général\n"
+              "• Votre progression sera trackée dans vos statistiques",
+        inline=False
+    )
+    
+    embed_commandes.add_field(
+        name="💰 /vente",
+        value="**Vendre des produits aux clients**\n"
+              "Cette commande vous permet d'enregistrer une vente.\n"
+              "• Sélectionnez le produit vendu\n"
+              "• Indiquez la quantité vendue\n"
+              "• Les produits seront retirés du coffre\n"
+              "• L'argent gagné sera comptabilisé\n"
+              "• Vos ventes seront enregistrées dans vos statistiques",
+        inline=False
+    )
+    
+    embed_commandes.add_field(
+        name="📢 À propos du channel commande",
+        value=f"Le **channel commande** est l'endroit où toutes vos actions sont enregistrées publiquement.\n"
+              f"• Chaque `/craft` et `/vente` y est automatiquement annoncé\n"
+              f"• Cela permet à l'équipe de voir l'activité en temps réel\n"
+              f"• C'est un outil de transparence et de suivi",
+        inline=False
+    )
+    
+    embed_commandes.set_footer(text="💡 Utilisez ces commandes pour contribuer au café !")
+    
+    await employee_channel.send(embed=embed_commandes)
+    
     # Réponse à la commande
     await interaction.response.send_message(
         f"✅ Canal employé créé: {employee_channel.mention}\n"
@@ -931,6 +974,254 @@ async def reset(interaction: discord.Interaction):
         view=view,
         ephemeral=True
     )
+
+# ==================== COMMANDE /MANUEL ====================
+
+@bot.tree.command(name="manuel", description="Guide complet de toutes les fonctionnalités du bot")
+async def manuel(interaction: discord.Interaction):
+    """Afficher un guide complet du bot"""
+    
+    # Page 1 - Vue d'ensemble
+    embed1 = discord.Embed(
+        title="📖 Manuel du Bot Uwu Café",
+        description="Bienvenue dans le guide complet du bot ! Ce bot gère toutes les opérations du café.",
+        color=discord.Color.purple()
+    )
+    
+    embed1.add_field(
+        name="🎯 Fonctionnalités Principales",
+        value="• **Gestion des ventes et crafts**\n"
+              "• **Système de recrutement**\n"
+              "• **Gestion du coffre et inventaire**\n"
+              "• **Statistiques des employés**\n"
+              "• **Système de commandes clients**\n"
+              "• **Paie des employés**",
+        inline=False
+    )
+    
+    embed1.set_footer(text="Page 1/4 - Vue d'ensemble")
+    
+    # Page 2 - Commandes Employés
+    embed2 = discord.Embed(
+        title="👨‍💼 Commandes Employés",
+        color=discord.Color.blue()
+    )
+    
+    embed2.add_field(
+        name="☕ /craft",
+        value="**Enregistrer un craft de produit**\n"
+              "• Sélectionnez le produit à crafter\n"
+              "• Indiquez la quantité\n"
+              "• Le produit est ajouté au coffre\n"
+              "• Vos stats personnelles sont mises à jour\n"
+              "• Une annonce est publiée dans le channel commande",
+        inline=False
+    )
+    
+    embed2.add_field(
+        name="💰 /vente",
+        value="**Enregistrer une vente client**\n"
+              "• Sélectionnez le produit vendu\n"
+              "• Indiquez la quantité vendue\n"
+              "• Uploadez une capture d'écran de la facture\n"
+              "• Le produit est retiré du coffre\n"
+              "• L'argent est comptabilisé\n"
+              "• Vos stats sont mises à jour",
+        inline=False
+    )
+    
+    embed2.add_field(
+        name="🗄️ /coffre",
+        value="**Afficher l'inventaire du coffre**\n"
+              "• Voir tous les produits disponibles\n"
+              "• Quantité en stock pour chaque produit\n"
+              "• Prix unitaire de chaque produit\n"
+              "• Mise à jour automatique après craft/vente",
+        inline=False
+    )
+    
+    embed2.set_footer(text="Page 2/4 - Commandes Employés")
+    
+    # Page 3 - Commandes Gestion
+    embed3 = discord.Embed(
+        title="⚙️ Commandes Gestion",
+        color=discord.Color.gold()
+    )
+    
+    embed3.add_field(
+        name="👤 /employer",
+        value="**Embaucher un nouveau membre**\n"
+              "• Créer un channel privé pour l'employé\n"
+              "• Attribuer les rôles employés\n"
+              "• Envoyer un message de bienvenue\n"
+              "• Expliquer les commandes /craft et /vente",
+        inline=False
+    )
+    
+    embed3.add_field(
+        name="🚫 /virer",
+        value="**Virer un employé**\n"
+              "• Enlever tous les rôles employés\n"
+              "• Supprimer le préfixe du pseudo\n"
+              "• Fermer son channel personnel",
+        inline=False
+    )
+    
+    embed3.add_field(
+        name="📊 /info",
+        value="**Statistiques détaillées des employés**\n"
+              "• Nombre de crafts par employé\n"
+              "• Nombre de ventes par employé\n"
+              "• Nombre de commandes traitées\n"
+              "• Classement des meilleurs employés",
+        inline=False
+    )
+    
+    embed3.add_field(
+        name="📈 /total",
+        value="**Résumé global**\n"
+              "• Total des crafts de tous les employés\n"
+              "• Total des ventes de tous les employés\n"
+              "• Vue d'ensemble de l'activité",
+        inline=False
+    )
+    
+    embed3.add_field(
+        name="💵 /paye",
+        value="**Calculer les salaires**\n"
+              "• Salaire basé sur les crafts et ventes\n"
+              "• 15$ par craft\n"
+              "• 25$ par vente\n"
+              "• Total pour chaque employé",
+        inline=False
+    )
+    
+    embed3.add_field(
+        name="🔄 /update",
+        value="**Mettre à jour le message du coffre**\n"
+              "• Force la mise à jour de l'affichage\n"
+              "• Rafraîchir l'inventaire",
+        inline=False
+    )
+    
+    embed3.add_field(
+        name="⚠️ /reset",
+        value="**Réinitialiser les statistiques**\n"
+              "• Efface toutes les stats des employés\n"
+              "• Le coffre n'est pas modifié\n"
+              "• Action irréversible",
+        inline=False
+    )
+    
+    embed3.set_footer(text="Page 3/4 - Commandes Gestion")
+    
+    # Page 4 - Système de Recrutement et Commandes
+    embed4 = discord.Embed(
+        title="🎫 Systèmes Automatiques",
+        color=discord.Color.green()
+    )
+    
+    embed4.add_field(
+        name="📝 /rc - Système de Recrutement",
+        value="**Panneau de candidature automatique**\n"
+              "• Bouton pour candidater\n"
+              "• Formulaire de 10 questions automatique\n"
+              "• Upload de pièce d'identité\n"
+              "• Envoi automatique à la modération\n"
+              "• Boutons accepter/refuser\n"
+              "• Messages automatiques au candidat\n"
+              "• Attribution automatique des rôles",
+        inline=False
+    )
+    
+    embed4.add_field(
+        name="🍰 Système de Commande Client",
+        value="**Via le bouton 'Commander'**\n"
+              "• Création d'un ticket privé client\n"
+              "• Menu déroulant de produits\n"
+              "• Sélection de quantités\n"
+              "• Calcul automatique du prix total\n"
+              "• Envoi de la commande aux employés\n"
+              "• Bouton pour prendre en charge\n"
+              "• Création d'un channel de livraison\n"
+              "• Bouton de validation de livraison",
+        inline=False
+    )
+    
+    embed4.add_field(
+        name="📋 Système de Contrat",
+        value="**Via le bouton 'Contrat'**\n"
+              "• Création d'un ticket privé\n"
+              "• Permet de discuter des contrats\n"
+              "• Gestion personnalisée",
+        inline=False
+    )
+    
+    embed4.add_field(
+        name="💡 Fonctionnalités Automatiques",
+        value="• **Mise à jour du coffre en temps réel**\n"
+              "• **Notifications dans le channel commande**\n"
+              "• **Sauvegarde automatique des données**\n"
+              "• **Messages privés automatiques**\n"
+              "• **Gestion des tickets automatique**",
+        inline=False
+    )
+    
+    embed4.set_footer(text="Page 4/4 - Systèmes Automatiques")
+    
+    # Envoyer tous les embeds
+    await interaction.response.send_message(embed=embed1, ephemeral=True)
+    await interaction.followup.send(embed=embed2, ephemeral=True)
+    await interaction.followup.send(embed=embed3, ephemeral=True)
+    await interaction.followup.send(embed=embed4, ephemeral=True)
+
+# ==================== COMMANDE /GUIDE ====================
+
+@bot.tree.command(name="guide", description="Guide des commandes employé (/craft et /vente)")
+async def guide(interaction: discord.Interaction):
+    """Afficher le guide des commandes employé"""
+    
+    embed_commandes = discord.Embed(
+        title="📋 Commandes Disponibles",
+        description="Voici les commandes que vous pouvez utiliser :",
+        color=discord.Color.blue()
+    )
+    
+    embed_commandes.add_field(
+        name="☕ /craft",
+        value="**Craft des produits pour le coffre**\n"
+              "Cette commande vous permet de créer des produits et de les ajouter au coffre du café.\n"
+              "• Sélectionnez le produit à crafter\n"
+              "• Indiquez la quantité\n"
+              "• Les produits seront ajoutés à votre compteur personnel et au coffre général\n"
+              "• Votre progression sera trackée dans vos statistiques",
+        inline=False
+    )
+    
+    embed_commandes.add_field(
+        name="💰 /vente",
+        value="**Vendre des produits aux clients**\n"
+              "Cette commande vous permet d'enregistrer une vente.\n"
+              "• Sélectionnez le produit vendu\n"
+              "• Indiquez la quantité vendue\n"
+              "• Les produits seront retirés du coffre\n"
+              "• L'argent gagné sera comptabilisé\n"
+              "• Vos ventes seront enregistrées dans vos statistiques",
+        inline=False
+    )
+    
+    embed_commandes.add_field(
+        name="📢 À propos du channel commande",
+        value=f"Le **channel commande** est l'endroit où toutes vos actions sont enregistrées publiquement.\n"
+              f"• Chaque `/craft` et `/vente` y est automatiquement annoncé\n"
+              f"• Cela permet à l'équipe de voir l'activité en temps réel\n"
+              f"• C'est un outil de transparence et de suivi",
+        inline=False
+    )
+    
+    embed_commandes.set_footer(text="💡 Utilisez ces commandes pour contribuer au café !")
+    
+    await interaction.response.send_message(embed=embed_commandes, ephemeral=True)
 
 # ==================== CONFIGURATION DES CHANNELS ET ROLES ====================
 
@@ -1893,8 +2184,8 @@ async def rc(interaction: discord.Interaction):
 
 # Lancer le bot
 if __name__ == "__main__":
-    TOKEN = os.getenv('DISCORD_TOKEN')
+    TOKEN = os.getenv('BOT_TOKEN')
     if not TOKEN:
-        print("❌ Token Discord manquant! Créez un fichier .env avec DISCORD_TOKEN=votre_token")
+        print("❌ Token Discord manquant! Créez un fichier .env avec BOT_TOKEN=votre_token")
     else:
         bot.run(TOKEN)

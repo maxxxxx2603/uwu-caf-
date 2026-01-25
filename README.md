@@ -33,7 +33,7 @@ Bot Discord pour gérer les ventes de produits de votre entreprise avec système
    - Copiez `.env.example` vers `.env`
    - Ajoutez votre token Discord:
      ```
-     DISCORD_TOKEN=votre_token_ici
+     BOT_TOKEN=votre_token_ici
      ```
 
 ## 🔧 Configuration du Bot Discord
@@ -125,65 +125,11 @@ discord.Color.orange()  # Orange
 - Vérifiez que le bot a la permission `Attach Files`
 - Assurez-vous d'envoyer une image valide (PNG, JPG, etc.)
 
-## � Déploiement sur Railway
-
-### Étape 1: Préparer GitHub
-
-1. **Créer un compte GitHub** (si nécessaire)
-   - Allez sur [github.com](https://github.com)
-
-2. **Pousser le code sur GitHub**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin https://github.com/maxxxxx2603/uwu-caf-.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-### Étape 2: Déployer sur Railway
-
-1. **Créer un compte Railway**
-   - Allez sur [railway.app](https://railway.app)
-   - Connectez-vous avec GitHub
-
-2. **Créer un nouveau projet**
-   - Cliquez sur "New Project"
-   - Sélectionnez "Deploy from GitHub repo"
-   - Choisissez votre repository `uwu-caf-`
-
-3. **Configurer les variables d'environnement**
-   - Dans les paramètres du projet, allez dans "Variables"
-   - Ajoutez:
-     - `DISCORD_TOKEN`: votre token Discord
-     - `GUILD_ID`: l'ID de votre serveur (optionnel)
-
-4. **Déploiement automatique**
-   - Railway détectera automatiquement `railway.json` et `Procfile`
-   - Le bot démarrera automatiquement
-   - Vérifiez les logs pour confirmer que tout fonctionne
-
-### Étape 3: Vérifier le déploiement
-
-- Regardez les logs dans Railway
-- Le bot devrait apparaître en ligne sur Discord
-- Testez la commande `/vente`
-
-### ⚙️ Fichiers de configuration Railway
-
-Le projet inclut:
-- `Procfile`: Définit comment démarrer le bot
-- `railway.json`: Configuration Railway
-- `runtime.txt`: Spécifie la version Python
-- `requirements.txt`: Liste des dépendances
-
 ## 📝 Support
 
 Pour toute question, contactez le développeur ou consultez la documentation Discord.py:
 - [Documentation discord.py](https://discordpy.readthedocs.io/)
 - [Guide Discord Developer](https://discord.com/developers/docs/)
-- [Documentation Railway](https://docs.railway.app/)
 
 ## 📄 Licence
 
