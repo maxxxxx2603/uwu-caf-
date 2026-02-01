@@ -2288,7 +2288,7 @@ async def rc(interaction: discord.Interaction):
     # Envoyer dans le channel d'annonce sans boutons (juste le message)
     announcement_channel = bot.get_channel(ANNOUNCEMENT_CHANNEL)
     if announcement_channel:
-        await announcement_channel.send(embed=embed_announcement)
+        await announcement_channel.send(content="<@&1407470187212439660>", embed=embed_announcement)
     
     # Embed pour le service client avec les 3 boutons
     embed_service = discord.Embed(
