@@ -368,6 +368,7 @@ async def vente(interaction: discord.Interaction):
 
 @bot.tree.command(name="employer", description="Créer un canal employé pour un nouveau membre du staff")
 @app_commands.describe(membre="Le membre à embaucher")
+@app_commands.checks.has_permissions(administrator=True)
 async def employer(interaction: discord.Interaction, membre: discord.Member):
     """Commande pour créer un canal employé"""
     guild = interaction.guild
@@ -429,13 +430,14 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
     
     # Message explicatif des commandes
     embed_commandes = discord.Embed(
-        title="📋 Commandes Disponibles",
-        description="Voici les commandes que vous pouvez utiliser :",
+        title="📋 Guide des Commandes Employé - /craft et /vente",
+        description="**Voici les commandes essentielles que vous devez utiliser :**\n\n"
+                   "Ces deux commandes sont au cœur de votre travail au café !",
         color=discord.Color.blue()
     )
-    
+
     embed_commandes.add_field(
-        name="☕ /craft",
+        name="☕ /craft - Créer des produits",
         value="**Craft des produits pour le coffre**\n"
               "Cette commande vous permet de créer des produits et de les ajouter au coffre du café.\n"
               "• Sélectionnez le produit à crafter\n"
@@ -444,9 +446,9 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
               "• Votre progression sera trackée dans vos statistiques",
         inline=False
     )
-    
+
     embed_commandes.add_field(
-        name="💰 /vente",
+        name="💰 /vente - Vendre aux clients",
         value="**Vendre des produits aux clients**\n"
               "Cette commande vous permet d'enregistrer une vente.\n"
               "• Sélectionnez le produit vendu\n"
@@ -456,20 +458,21 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
               "• Vos ventes seront enregistrées dans vos statistiques",
         inline=False
     )
-    
+
     embed_commandes.add_field(
-        name="📢 À propos du channel commande",
-        value=f"Le **channel commande** est l'endroit où toutes vos actions sont enregistrées publiquement.\n"
-              f"• Chaque `/craft` et `/vente` y est automatiquement annoncé\n"
-              f"• Cela permet à l'équipe de voir l'activité en temps réel\n"
-              f"• C'est un outil de transparence et de suivi",
+        name="📢 Channel de Prise en Charge",
+        value=f"Le **channel commande** (<#1464356444940931231>) est l'endroit où :\n"
+              f"• Les clients passent leurs commandes\n"
+              f"• Vous pouvez prendre en charge les commandes avec le bouton ✋\n"
+              f"• Toutes les activités `/craft` et `/vente` sont annoncées\n"
+              f"• L'équipe suit l'activité en temps réel",
         inline=False
     )
-    
+
     embed_commandes.set_footer(text="💡 Utilisez ces commandes pour contribuer au café !")
-    
+
     await employee_channel.send(embed=embed_commandes)
-    
+
     # Réponse à la commande
     await interaction.response.send_message(
         f"✅ Canal employé créé: {employee_channel.mention}\n"
@@ -480,6 +483,7 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
 # ==================== COMMANDE /COFFRE ====================
 
 @bot.tree.command(name="coffre", description="Afficher l'inventaire du coffre")
+@app_commands.checks.has_permissions(administrator=True)
 async def coffre(interaction: discord.Interaction):
     """Afficher l'état actuel du coffre avec mise à jour automatique"""
     global coffre_inventory
@@ -511,6 +515,7 @@ async def coffre(interaction: discord.Interaction):
 # ==================== COMMANDE /UPDATE ====================
 
 @bot.tree.command(name="update", description="Mettre à jour les données du coffre")
+@app_commands.checks.has_permissions(administrator=True)
 async def update(interaction: discord.Interaction):
     """Forcer la mise à jour du message coffre"""
     await update_coffre_message()
@@ -519,6 +524,7 @@ async def update(interaction: discord.Interaction):
 # ==================== COMMANDE /TOTAL ====================
 
 @bot.tree.command(name="total", description="Afficher le total des crafts et ventes par employé")
+@app_commands.checks.has_permissions(administrator=True)
 async def total(interaction: discord.Interaction):
     """Afficher les totaux de crafts et ventes par employé"""
     stats = load_stats()
@@ -557,6 +563,7 @@ async def total(interaction: discord.Interaction):
 # ==================== COMMANDE /PAYE ====================
 
 @bot.tree.command(name="paye", description="Calculer les salaires des employés")
+@app_commands.checks.has_permissions(administrator=True)
 async def paye(interaction: discord.Interaction):
     """Calculer les salaires basés sur les crafts"""
     stats = load_stats()
@@ -824,6 +831,7 @@ async def craft(interaction: discord.Interaction):
 
 @bot.tree.command(name="virer", description="Virer un employé (enlever rôles et pseudo)")
 @app_commands.describe(membre="Le membre à virer")
+@app_commands.checks.has_permissions(administrator=True)
 async def virer(interaction: discord.Interaction, membre: discord.Member):
     """Commande pour virer un employé"""
     guild = interaction.guild
@@ -891,6 +899,7 @@ async def virer(interaction: discord.Interaction, membre: discord.Member):
 # ==================== COMMANDE /INFO ====================
 
 @bot.tree.command(name="info", description="Afficher les statistiques des employés")
+@app_commands.checks.has_permissions(administrator=True)
 async def info(interaction: discord.Interaction):
     """Afficher les stats de tous les employés"""
     stats = load_stats()
@@ -933,6 +942,7 @@ async def info(interaction: discord.Interaction):
 # ==================== COMMANDE /RESET ====================
 
 @bot.tree.command(name="reset", description="Remettre à zéro les statistiques des employés")
+@app_commands.checks.has_permissions(administrator=True)
 async def reset(interaction: discord.Interaction):
     """Remettre à zéro les statistiques des employés uniquement"""
     
@@ -978,6 +988,7 @@ async def reset(interaction: discord.Interaction):
 # ==================== COMMANDE /MANUEL ====================
 
 @bot.tree.command(name="manuel", description="Guide complet de toutes les fonctionnalités du bot")
+@app_commands.checks.has_permissions(administrator=True)
 async def manuel(interaction: discord.Interaction):
     """Afficher un guide complet du bot"""
     
@@ -1175,9 +1186,67 @@ async def manuel(interaction: discord.Interaction):
     await interaction.followup.send(embed=embed3, ephemeral=True)
     await interaction.followup.send(embed=embed4, ephemeral=True)
 
+# ==================== COMMANDE /HELP ====================
+
+@bot.tree.command(name="help", description="Afficher l'aide complète du bot avec toutes les commandes")
+@app_commands.checks.has_permissions(administrator=True)
+async def help_command(interaction: discord.Interaction):
+    """Afficher le guide complet du bot avec liste de toutes les commandes"""
+    
+    # Page 1 - Vue d'ensemble et liste des commandes
+    embed1 = discord.Embed(
+        title="📖 Aide - Bot Uwu Café",
+        description="**Bienvenue dans le système du café !**\n\n"
+                   "Voici toutes les commandes disponibles organisées par catégorie.",
+        color=discord.Color.purple()
+    )
+    
+    embed1.add_field(
+        name="👨‍💼 Commandes Employés",
+        value="• `/craft` - Créer des produits pour le coffre\n"
+              "• `/vente` - Enregistrer une vente client\n"
+              "• `/coffre` - Voir l'inventaire actuel\n"
+              "• `/total` - Voir vos statistiques personnelles\n"
+              "• `/info` - Statistiques de tous les employés",
+        inline=False
+    )
+    
+    embed1.add_field(
+        name="⚙️ Commandes Gestion",
+        value="• `/employer` - Embaucher un nouveau membre\n"
+              "• `/virer` - Renvoyer un employé\n"
+              "• `/paye` - Calculer les salaires\n"
+              "• `/update` - Mettre à jour le coffre\n"
+              "• `/reset` - Réinitialiser les stats",
+        inline=False
+    )
+    
+    embed1.add_field(
+        name="📚 Commandes d'Aide",
+        value="• `/help` - Cette aide (vue d'ensemble)\n"
+              "• `/manuel` - Guide détaillé complet\n"
+              "• `/guide` - Guide rapide /craft et /vente\n"
+              "• `/rc` - Panneau de recrutement",
+        inline=False
+    )
+    
+    embed1.add_field(
+        name="🎫 Systèmes Automatiques",
+        value="• **Bouton Candidater** - Formulaire de recrutement\n"
+              "• **Bouton Commander** - Système de commande client\n"
+              "• **Bouton Contrat** - Demande de contrat\n"
+              "• **Prise en charge** - Channel <#1464356444940931231>",
+        inline=False
+    )
+    
+    embed1.set_footer(text="💡 Tapez /manuel pour un guide détaillé de chaque commande !")
+    
+    await interaction.response.send_message(embed=embed1, ephemeral=True)
+
 # ==================== COMMANDE /GUIDE ====================
 
 @bot.tree.command(name="guide", description="Guide des commandes employé (/craft et /vente)")
+@app_commands.checks.has_permissions(administrator=True)
 async def guide(interaction: discord.Interaction):
     """Afficher le guide des commandes employé"""
     
@@ -1551,7 +1620,8 @@ class OrderActionView(discord.ui.View):
                 
                 # Bouton pour prendre en charge
                 view = OrderStatusView(self.user, guild, order_text, total_price)
-                order_message = await order_channel.send(embed=embed_order, view=view)
+                # Ping @everyone pour notifier les employés
+                order_message = await order_channel.send(content="@everyone", embed=embed_order, view=view)
                 view.order_message = order_message
                 
                 # Confirmer à l'utilisateur que sa commande a été envoyée
@@ -1691,6 +1761,12 @@ class OrderStatusView(discord.ui.View):
             else:
                 await interaction.message.edit(embed=embed_updated, view=None)
             
+            # Confirmer la prise en charge à l'employé
+            await interaction.followup.send(
+                f"✅ Vous avez pris en charge la commande ! Un channel privé a été créé: {ticket_channel.mention}",
+                ephemeral=True
+            )
+
         except Exception as e:
             print(f"Erreur lors de la prise en charge de la commande: {e}")
             await interaction.followup.send(f"❌ Erreur: {e}", ephemeral=True)
@@ -2138,6 +2214,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 @bot.tree.command(name="rc", description="Afficher le panneau de recrutement Uwu Café")
+@app_commands.checks.has_permissions(administrator=True)
 async def rc(interaction: discord.Interaction):
     """Commande pour afficher le panneau de recrutement"""
     
