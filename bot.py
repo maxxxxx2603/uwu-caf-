@@ -480,11 +480,11 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
         ephemeral=False
     )
 
-# ==================== COMMANDE /ZIZI ====================
+# ==================== COMMANDE /AIDEEMPLOYÉ ====================
 
-@bot.tree.command(name="zizi", description="Afficher le guide des commandes employé")
+@bot.tree.command(name="aideemployé", description="Afficher le guide des commandes employé")
 @app_commands.checks.has_permissions(administrator=True)
-async def zizi(interaction: discord.Interaction):
+async def aideemploye(interaction: discord.Interaction):
     """Guide simple des commandes employé"""
     
     embed = discord.Embed(
