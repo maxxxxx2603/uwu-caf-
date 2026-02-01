@@ -1972,20 +1972,8 @@ class DecisionView(discord.ui.View):
         except Exception as e:
             print(f"Erreur lors de l'envoi du DM: {e}")
 
-        # Supprimer le ticket CV
-        try:
-            cv_channel = self.user_data.get("channel")
-            if cv_channel and isinstance(cv_channel, discord.TextChannel):
-                await cv_channel.delete()
-                print(f"Ticket CV {cv_channel.name} supprime")
-        except Exception as e:
-            print(f"Erreur lors de la suppression du ticket CV: {e}")
 
-        # Confirmation
-        await interaction.followup.send(
-            f"✅ Candidature de {user.mention} acceptee ! Role attribue et redirige vers {waiting_channel_mention}",
-            ephemeral=False
-        )
+
 
 
     @discord.ui.button(label="❌ Refuser", style=discord.ButtonStyle.red, custom_id="reject_cv")
@@ -2022,6 +2010,13 @@ class DecisionView(discord.ui.View):
             item.disabled = True
         
         await interaction.message.edit(embed=embed, view=self)
+
+        # Supprimer le message CV après 2 secondes
+        await discord.utils.sleep_until(discord.utils.utcnow() + timedelta(seconds=2))
+        try:
+            await interaction.message.delete()
+        except Exception as e:
+            print(f"Erreur lors de la suppression du message CV: {e}")
         
         # DM au candidat
         try:
@@ -2034,16 +2029,6 @@ class DecisionView(discord.ui.View):
         except:
             pass
         
-        # Supprimer le ticket CV
-        try:
-            ticket_channel_name = f"cv-{user.name}"
-            for channel in guild.channels:
-                if channel.name == ticket_channel_name:
-                    await channel.delete()
-                    print(f"Ticket CV {ticket_channel_name} supprimé")
-                    break
-        except Exception as e:
-            print(f"Erreur lors de la suppression du ticket CV: {e}")
         
         await interaction.followup.send(
             f"❌ Candidature de {user.mention} refusée.",
@@ -2185,6 +2170,21 @@ async def on_message(message):
                     view=view
                 )
             
+            # Envoyer un MP au candidat
+            try:
+                await message.author.send(
+                    embed=discord.Embed(
+                        title="✅ Candidature Reçue !",
+                        description=f"Bonjour {message.author.mention},\n\n"
+                                   f"Nous avons bien reçu votre candidature pour **Uwu Café**.\n"
+                                   f"Notre équipe va l'examiner et vous donnera une réponse dès que possible.\n\n"
+                                   f"Merci pour votre intérêt ! ☕💖",
+                        color=discord.Color.green()
+                    )
+                )
+            except Exception as e:
+                print(f"Impossible d'envoyer le MP au candidat: {e}")
+
             # Message de confirmation
             await message.channel.send(
                 embed=discord.Embed(
