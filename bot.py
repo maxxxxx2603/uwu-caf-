@@ -7,6 +7,7 @@ import aiohttp
 from io import BytesIO
 import asyncio
 import json
+from datetime import timedelta
 
 load_dotenv()
 
@@ -1338,6 +1339,10 @@ ORDER_CHANNEL = 1464356444940931231
 EMPLOYEE_CATEGORY = 1438632483158491196
 
 ACCEPTED_ROLE_ID = 1407470187212439662
+WAITING_RC_ROLE_ID = 0  # TODO: Remplacer par l ID du role attente rc
+WAITING_INTERVIEW_CHANNEL = 0  # TODO: Remplacer par l ID du channel attente entretiens
+EMPLOYEE_ROLE_1 = 0  # TODO: Remplacer si necessaire
+EMPLOYEE_ROLE_2 = 0  # TODO: Remplacer si necessaire
 EMPLOYEE_ROLE_1 = 1407470187221094461
 EMPLOYEE_ROLE_2 = 1407470187221094467
 
@@ -2228,7 +2233,7 @@ async def on_message(message):
             
             # Fermer le ticket après 10 secondes
             await message.channel.send("Ce ticket va se fermer dans 10 secondes...")
-            await discord.utils.sleep_until(discord.utils.utcnow() + discord.timedelta(seconds=10))
+            await discord.utils.sleep_until(discord.utils.utcnow() + timedelta(seconds=10))
             await message.channel.delete()
             
             # Nettoyer les données
