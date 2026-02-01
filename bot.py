@@ -485,51 +485,33 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
 @bot.tree.command(name="zizi", description="Afficher le guide des commandes employé")
 @app_commands.checks.has_permissions(administrator=True)
 async def zizi(interaction: discord.Interaction):
-    """Afficher le même message que /employer"""
+    """Guide simple des commandes employé"""
     
-    embed_commandes = discord.Embed(
-        title="📋 Guide des Commandes Employé - /craft et /vente",
-        description="**Voici les commandes essentielles que vous devez utiliser :**\n\n"
-                   "Ces deux commandes sont au cœur de votre travail au café !",
+    embed = discord.Embed(
+        title="📋 Guide Employé",
+        description="**Les 2 commandes essentielles :**",
         color=discord.Color.blue()
     )
 
-    embed_commandes.add_field(
-        name="☕ /craft - Créer des produits",
-        value="**Craft des produits pour le coffre**\n"
-              "Cette commande vous permet de créer des produits et de les ajouter au coffre du café.\n"
-              "• Sélectionnez le produit à crafter\n"
-              "• Indiquez la quantité\n"
-              "• Les produits seront ajoutés à votre compteur personnel et au coffre général\n"
-              "• Votre progression sera trackée dans vos statistiques",
+    embed.add_field(
+        name="☕ /craft",
+        value="Créer des produits → ajoute au coffre",
+        inline=True
+    )
+
+    embed.add_field(
+        name="💰 /vente",
+        value="Vendre des produits → retire du coffre",
+        inline=True
+    )
+
+    embed.add_field(
+        name="📍 Channel commande",
+        value=f"<#1464356444940931231>\nPrenez en charge les commandes ici !",
         inline=False
     )
 
-    embed_commandes.add_field(
-        name="💰 /vente - Vendre aux clients",
-        value="**Vendre des produits aux clients**\n"
-              "Cette commande vous permet d'enregistrer une vente.\n"
-              "• Sélectionnez le produit vendu\n"
-              "• Indiquez la quantité vendue\n"
-              "• Les produits seront retirés du coffre\n"
-              "• L'argent gagné sera comptabilisé\n"
-              "• Vos ventes seront enregistrées dans vos statistiques",
-        inline=False
-    )
-
-    embed_commandes.add_field(
-        name="📢 Channel de Prise en Charge",
-        value=f"Le **channel commande** (<#1464356444940931231>) est l'endroit où :\n"
-              f"• Les clients passent leurs commandes\n"
-              f"• Vous pouvez prendre en charge les commandes avec le bouton ✋\n"
-              f"• Toutes les activités `/craft` et `/vente` sont annoncées\n"
-              f"• L'équipe suit l'activité en temps réel",
-        inline=False
-    )
-
-    embed_commandes.set_footer(text="💡 Utilisez ces commandes pour contribuer au café !")
-
-    await interaction.response.send_message(embed=embed_commandes, ephemeral=False)
+    await interaction.response.send_message(embed=embed, ephemeral=False)
 
 # ==================== COMMANDE /COFFRE ====================
 
