@@ -506,8 +506,10 @@ async def aideemploye(interaction: discord.Interaction):
     )
 
     embed.add_field(
-        name="📍 Channel commande",
-        value=f"<#1464356444940931231>\nPrenez en charge les commandes ici !",
+        name="📍 Channel de Commande",
+        value=f"**Rendez-vous ici:** <#1464356444940931231>\n"
+              f"• Prenez en charge les commandes clients\n"
+              f"• Suivez l'activité du café en direct",
         inline=False
     )
 
