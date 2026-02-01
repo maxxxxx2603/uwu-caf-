@@ -2238,7 +2238,7 @@ async def on_message(message):
             # Sauvegarder la réponse
             data["answers"].append(message.content)
             
-            # Si c'est la première question (nom/prénom), renommer le channel
+            # Si c'est la première question (nom/prénom), renommer le channel ET l'utilisateur
             if data["question_index"] == 0:
                 try:
                     nom_propre = message.content.lower().replace(" ", "-")
@@ -2246,6 +2246,12 @@ async def on_message(message):
                     nom_propre = "".join(c for c in nom_propre if c.isalnum() or c == "-")[:100]
                     new_name = f"cv-{nom_propre}"
                     await message.channel.edit(name=new_name)
+                    
+                    # Renommer aussi le membre avec son nom/prénom
+                    try:
+                        await message.author.edit(nick=message.content[:32])  # Discord limite à 32 caractères
+                    except Exception as e:
+                        print(f"Erreur lors du renommage du membre: {e}")
                 except Exception as e:
                     print(f"Erreur lors du renommage du channel: {e}")
             
