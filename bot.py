@@ -2242,6 +2242,9 @@ async def on_message(message):
 async def rc(interaction: discord.Interaction):
     """Commande pour afficher le panneau de recrutement"""
     
+    # Defer pour eviter l'expiration
+    await interaction.response.defer(ephemeral=False)
+    
     # Embed pour le channel d'annonce (sans l'option Candidater)
     embed_announcement = discord.Embed(
         title="# Hey tout le monde ☕💖",
