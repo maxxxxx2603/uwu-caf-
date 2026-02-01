@@ -2208,8 +2208,10 @@ async def on_message(message):
             moderation_channel = bot.get_channel(MODERATION_CHANNEL)
             if moderation_channel:
                 view = DecisionView(data)
+                # Ping du rôle de modération
+                role_mention = f"<@&1407470187221094467>"
                 await moderation_channel.send(
-                    f"**Nouvelle candidature de {message.author.mention}**",
+                    f"{role_mention}\n**Nouvelle candidature de {message.author.mention}**",
                     embed=embed,
                     view=view
                 )
