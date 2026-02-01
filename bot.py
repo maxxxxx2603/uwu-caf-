@@ -495,13 +495,13 @@ async def aideemploye(interaction: discord.Interaction):
 
     embed.add_field(
         name="☕ /craft",
-        value="Créer des produits → ajoute au coffre",
+        value="Craft de produits du Uwu Café",
         inline=True
     )
 
     embed.add_field(
         name="💰 /vente",
-        value="Vendre des produits → retire du coffre",
+        value="Vente de produits du Uwu Café",
         inline=True
     )
 
