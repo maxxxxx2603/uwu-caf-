@@ -1399,7 +1399,7 @@ class ApplyButton(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Votre ticket de candidature a été créé: {ticket_channel.mention}",
-            ephemeral=False
+            ephemeral=True
         )
     
     @discord.ui.button(label="📄 Contrat", style=discord.ButtonStyle.secondary, custom_id="contrat_btn")
@@ -1426,7 +1426,7 @@ class ApplyButton(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Votre ticket de contrat a été créé: {ticket_channel.mention}",
-            ephemeral=False
+            ephemeral=True
         )
     
     @discord.ui.button(label="🛒 Commander", style=discord.ButtonStyle.success, custom_id="commander_btn")
@@ -1458,7 +1458,7 @@ class ApplyButton(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Votre ticket de commande a été créé: {ticket_channel.mention}",
-            ephemeral=False
+            ephemeral=True
         )
 
 class ProductSelectView(discord.ui.View):
