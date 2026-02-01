@@ -2255,6 +2255,9 @@ async def on_message(message):
                 except Exception as e:
                     print(f"Erreur lors du renommage du channel: {e}")
             
+            # Passer a la question suivante
+            data["question_index"] += 1
+
             if data["question_index"] < len(CV_QUESTIONS):
                 embed = discord.Embed(
                     title="📋 Candidature Uwu Café",
