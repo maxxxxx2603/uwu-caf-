@@ -2272,8 +2272,8 @@ async def rc(interaction: discord.Interaction):
     
     # Embed pour le channel d'annonce (sans l'option Candidater)
     embed_announcement = discord.Embed(
-        title="Hey tout le monde ☕💖",
-        description="# Une nouvelle équipe, une nouvelle énergie, et toujours la même ambiance douce et réconfortante qui fait tout le charme du lieu ✨\n\n"
+        title="# Hey tout le monde ☕💖",
+        description="Une nouvelle équipe, une nouvelle énergie, et toujours la même ambiance douce et réconfortante qui fait tout le charme du lieu ✨\n\n"
                    "🍰 **Au programme :**\n"
                    "– Une atmosphère chaleureuse et conviviale 🌷\n"
                    "– Des boissons et douceurs toujours aussi délicieuses 😋\n"
@@ -2281,7 +2281,7 @@ async def rc(interaction: discord.Interaction):
                    "Le UwU Café revient plus vivant que jamais, prêt à vous accueillir avec le sourire et beaucoup d'amour 💕\n\n"
                    "📍 Venez découvrir votre café préféré dès aujourd'hui et partager un moment tout doux avec nous ✨\n\n"
                    "Avec toute notre tendresse,\n"
-                   "L'équipe du Uwu Café ☕💞",
+                   "L'équipe du Uwu Café ☕💞\n\n# Recrutement on 🟢",
         color=discord.Color.pink()
     )
     
