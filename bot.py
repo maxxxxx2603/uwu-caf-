@@ -2237,9 +2237,18 @@ async def on_message(message):
         else:
             # Sauvegarder la réponse
             data["answers"].append(message.content)
-            data["question_index"] += 1
             
-            # Envoyer la question suivante
+            # Si c'est la première question (nom/prénom), renommer le channel
+            if data["question_index"] == 0:
+                try:
+                    nom_propre = message.content.lower().replace(" ", "-")
+                    # Limiter à 100 caractères et enlever les caractères spéciaux
+                    nom_propre = "".join(c for c in nom_propre if c.isalnum() or c == "-")[:100]
+                    new_name = f"cv-{nom_propre}"
+                    await message.channel.edit(name=new_name)
+                except Exception as e:
+                    print(f"Erreur lors du renommage du channel: {e}")
+            
             if data["question_index"] < len(CV_QUESTIONS):
                 embed = discord.Embed(
                     title="📋 Candidature Uwu Café",
