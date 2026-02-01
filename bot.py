@@ -1992,6 +1992,10 @@ class DecisionView(discord.ui.View):
     async def refuser(self, interaction: discord.Interaction, button: discord.ui.Button):
         user = self.user_data["user"]
         guild = interaction.guild
+
+        # Defer pour eviter l'expiration
+        await interaction.response.defer(ephemeral=False)
+        
         
         # Envoyer un message de log dans MODERATION_CHANNEL
         try:
@@ -2041,7 +2045,7 @@ class DecisionView(discord.ui.View):
         except Exception as e:
             print(f"Erreur lors de la suppression du ticket CV: {e}")
         
-        await interaction.response.send_message(
+        await interaction.followup.send(
             f"❌ Candidature de {user.mention} refusée.",
             ephemeral=False
         )
@@ -2274,7 +2278,7 @@ async def rc(interaction: discord.Interaction):
         view = ApplyButton()
         await cv_channel.send(content="<@&1407470187212439660>", embed=embed_service, view=view)
     
-    await interaction.response.send_message(
+    await interaction.followup.send(
         "✅ Panneau de recrutement publié dans les deux channels !",
         ephemeral=False
     )
