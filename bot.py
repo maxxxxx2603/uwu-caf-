@@ -1891,21 +1891,25 @@ class DecisionView(discord.ui.View):
     
     @discord.ui.button(label="✅ Accepter", style=discord.ButtonStyle.green, custom_id="accept_cv")
     async def accepter(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # Defer pour eviter l'expiration
+        await interaction.response.defer(ephemeral=False)
+        
         user = self.user_data["user"]
         guild = interaction.guild
-        
-        # Attribuer le rôle accepté
-        role = guild.get_role(ACCEPTED_ROLE_ID)
+
+        # Attribuer le role
+        role = guild.get_role(1407470187212439662)
         if role:
-            await user.add_roles(role)
-        
-        # Envoyer la carte d'identité dans ID_CARD_STORAGE
+            try:
+                await user.add_roles(role)
+            except Exception as e:
+                print(f"Erreur lors de l'attribution du role: {e}")
+
+        # Envoyer la carte d'identite dans ID_CARD_STORAGE
         try:
-            # Récupérer l'URL de la carte d'identité depuis l'embed
             if interaction.message.embeds and interaction.message.embeds[0].image:
                 id_url = interaction.message.embeds[0].image.url
-                
-                # Télécharger et envoyer la carte d'identité
+
                 async with aiohttp.ClientSession() as session:
                     async with session.get(id_url) as resp:
                         if resp.status == 200:
@@ -1914,120 +1918,76 @@ class DecisionView(discord.ui.View):
                                 BytesIO(image_data),
                                 filename=f"id_{user.name}.png"
                             )
-                            
+
                             storage_channel = guild.get_channel(ID_CARD_STORAGE)
                             if storage_channel:
                                 await storage_channel.send(
-                                    f"**✅ Pièce d'identité de {user.mention}** (Accepté)",
+                                    f"**✅ Piece d'identite de {user.mention}** (Accepte - En attente RC)",
                                     file=image_file
                                 )
         except Exception as e:
-            print(f"Erreur lors de l'envoi de la carte d'identité: {e}")
-        
-        # Créer le canal employé automatiquement
-        employee_channel_mention = None
-        try:
-            # Récupérer le nom depuis les données CV
-            nom_channel = user.name.lower().replace(" ", "-")
-            if user.id in cv_data_storage:
-                # Utiliser le nom RP de la candidature (première réponse)
-                nom_rp = cv_data_storage[user.id]["answers"][0]
-                nom_channel = nom_rp.lower().replace(" ", "-")
-            
-            # Créer le canal dans la catégorie employés
-            employee_category = discord.utils.get(guild.categories, id=EMPLOYEE_CATEGORY)
-            
-            if employee_category:
-                # Créer le canal
-                employee_channel = await guild.create_text_channel(
-                    name=f"👤┃{nom_channel}",
-                    category=employee_category,
-                    topic=f"Canal personnel de {user.mention}"
-                )
-                employee_channel_mention = employee_channel.mention
-                
-                # Permissions
-                await employee_channel.set_permissions(guild.default_role, read_messages=False)
-                await employee_channel.set_permissions(user, read_messages=True, send_messages=True)
-                
-                # Attribuer les rôles employés
-                role1 = guild.get_role(EMPLOYEE_ROLE_1)
-                role2 = guild.get_role(EMPLOYEE_ROLE_2)
-                
-                if role1:
-                    await user.add_roles(role1)
-                if role2:
-                    await user.add_roles(role2)
-                
-                # Message de bienvenue dans le canal employé
-                embed_welcome = discord.Embed(
-                    title="🎉 Bienvenue dans l'équipe !",
-                    description=f"Bienvenue {user.mention} dans l'équipe du **Uwu Café** !\n\n"
-                               f"Ce canal est votre espace personnel pour:\n"
-                               f"• Consulter vos horaires\n"
-                               f"• Recevoir des informations importantes\n"
-                               f"• Communiquer avec la direction\n\n"
-                               f"Bonne chance dans vos nouvelles fonctions ! ☕",
-                    color=discord.Color.green()
-                )
-                await employee_channel.send(embed=embed_welcome)
-        except Exception as e:
-            print(f"Erreur lors de la création du canal employé: {e}")
-        
+            print(f"Erreur lors de l'envoi de la carte d'identite: {e}")
+
+        # Channel d'attente
+        waiting_channel = guild.get_channel(1464308111987703909)
+        waiting_channel_mention = waiting_channel.mention if waiting_channel else "le salon d'attente"
+
         # Envoyer un message de log dans MODERATION_CHANNEL
         try:
             moderation_channel = guild.get_channel(MODERATION_CHANNEL)
             if moderation_channel:
                 log_embed = discord.Embed(
-                    title="✅ Candidature Acceptée",
+                    title="✅ Candidature Acceptee - En attente RC",
                     description=f"**Candidat:** {user.mention} ({user.name})\n"
-                               f"**Accepté par:** {interaction.user.mention}\n"
-                               f"**Canal employé:** {employee_channel_mention or 'Non créé'}",
-                    color=discord.Color.green(),
+                               f"**Accepte par:** {interaction.user.mention}\n"
+                               f"**Statut:** En attente d'entretien\n"
+                               f"**Channel d'attente:** {waiting_channel_mention}",
+                    color=discord.Color.orange(),
                     timestamp=discord.utils.utcnow()
                 )
                 await moderation_channel.send(embed=log_embed)
         except Exception as e:
             print(f"Erreur lors de l'envoi du log: {e}")
-        
+
         # Modifier l'embed
         embed = interaction.message.embeds[0]
-        embed.color = discord.Color.green()
-        embed.title = "✅ Candidature Acceptée"
-        
-        # Désactiver les boutons
+        embed.color = discord.Color.orange()
+        embed.title = "✅ Candidature Acceptee - En attente RC"
+
+        # Desactiver les boutons
         for item in self.children:
             item.disabled = True
-        
+
         await interaction.message.edit(embed=embed, view=self)
-        
+
         # DM au candidat
         try:
-            await user.send(
-                f"🎉 **Félicitations !**\n\n"
-                f"Votre candidature pour **Uwu Café** a été **acceptée** !\n"
-                f"Bienvenue dans l'équipe ! 💼☕\n\n"
-                f"Un canal personnel a été créé pour vous sur le serveur."
+            dm_message = (
+                f"🎉 **Felicitations !**\n\n"
+                f"Votre candidature pour **Uwu Cafe** a ete **acceptee** !\n\n"
+                f"Vous etes maintenant en attente d'entretien.\n"
+                f"Veuillez vous rendre dans le salon {waiting_channel_mention} pour mettre vos disponibilites."
             )
-        except:
-            pass
-        
+            await user.send(dm_message)
+        except Exception as e:
+            print(f"Erreur lors de l'envoi du DM: {e}")
+
         # Supprimer le ticket CV
         try:
-            ticket_channel_name = f"cv-{user.name}"
-            for channel in guild.channels:
-                if channel.name == ticket_channel_name:
-                    await channel.delete()
-                    print(f"Ticket CV {ticket_channel_name} supprimé")
-                    break
+            cv_channel = self.user_data.get("channel")
+            if cv_channel and isinstance(cv_channel, discord.TextChannel):
+                await cv_channel.delete()
+                print(f"Ticket CV {cv_channel.name} supprime")
         except Exception as e:
             print(f"Erreur lors de la suppression du ticket CV: {e}")
-        
-        await interaction.response.send_message(
-            f"✅ Candidature de {user.mention} acceptée ! Canal employé créé.",
+
+        # Confirmation
+        await interaction.followup.send(
+            f"✅ Candidature de {user.mention} acceptee ! Role attribue et redirige vers {waiting_channel_mention}",
             ephemeral=False
         )
-    
+
+
     @discord.ui.button(label="❌ Refuser", style=discord.ButtonStyle.red, custom_id="reject_cv")
     async def refuser(self, interaction: discord.Interaction, button: discord.ui.Button):
         user = self.user_data["user"]
