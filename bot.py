@@ -2272,8 +2272,8 @@ async def rc(interaction: discord.Interaction):
     
     # Embed pour le channel d'annonce (sans l'option Candidater)
     embed_announcement = discord.Embed(
-        title="# Hey tout le monde ☕💖",
-        description="Une nouvelle équipe, une nouvelle énergie, et toujours la même ambiance douce et réconfortante qui fait tout le charme du lieu ✨\n\n"
+        title="Hey tout le monde ☕💖",
+        description="# Une nouvelle équipe, une nouvelle énergie, et toujours la même ambiance douce et réconfortante qui fait tout le charme du lieu ✨\n\n"
                    "🍰 **Au programme :**\n"
                    "– Une atmosphère chaleureuse et conviviale 🌷\n"
                    "– Des boissons et douceurs toujours aussi délicieuses 😋\n"
@@ -2304,7 +2304,7 @@ async def rc(interaction: discord.Interaction):
     cv_channel = bot.get_channel(CV_SUBMISSION_CHANNEL)
     if cv_channel:
         view = ApplyButton()
-        await cv_channel.send(embed=embed_service, view=view)
+        await cv_channel.send(content="<@&1407470187212439660>", embed=embed_service, view=view)
     
     await interaction.response.send_message(
         "✅ Panneau de recrutement publié dans les deux channels !",
