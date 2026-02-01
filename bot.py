@@ -180,7 +180,7 @@ class QuantiteModal(discord.ui.Modal, title="Quantité"):
             if qte <= 0:
                 await interaction.response.send_message(
                     "❌ La quantité doit être supérieure à 0!",
-                    ephemeral=True
+                    ephemeral=False
                 )
                 return
             
@@ -220,7 +220,7 @@ class QuantiteModal(discord.ui.Modal, title="Quantité"):
                 if not attachment.content_type or not attachment.content_type.startswith('image/'):
                     await interaction.followup.send(
                         "❌ Veuillez envoyer une image valide!",
-                        ephemeral=True
+                        ephemeral=False
                     )
                     return
                 
@@ -332,13 +332,13 @@ class QuantiteModal(discord.ui.Modal, title="Quantité"):
             except TimeoutError:
                 await interaction.followup.send(
                     "⏱️ Temps écoulé! Veuillez réessayer la commande /vente.",
-                    ephemeral=True
+                    ephemeral=False
                 )
         
         except ValueError:
             await interaction.response.send_message(
                 "❌ Veuillez entrer un nombre valide!",
-                ephemeral=True
+                ephemeral=False
             )
 
 class VenteView(discord.ui.View):
@@ -382,7 +382,7 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
     if not employee_category:
         await interaction.response.send_message(
             "❌ Catégorie employés introuvable!",
-            ephemeral=True
+            ephemeral=False
         )
         return
     
@@ -477,7 +477,7 @@ async def employer(interaction: discord.Interaction, membre: discord.Member):
     await interaction.response.send_message(
         f"✅ Canal employé créé: {employee_channel.mention}\n"
         f"Rôles: {', '.join(roles_ajoutes) if roles_ajoutes else 'À ajouter manuellement'}",
-        ephemeral=True
+        ephemeral=False
     )
 
 # ==================== COMMANDE /ZIZI ====================
@@ -529,7 +529,7 @@ async def zizi(interaction: discord.Interaction):
 
     embed_commandes.set_footer(text="💡 Utilisez ces commandes pour contribuer au café !")
 
-    await interaction.response.send_message(embed=embed_commandes, ephemeral=True)
+    await interaction.response.send_message(embed=embed_commandes, ephemeral=False)
 
 # ==================== COMMANDE /COFFRE ====================
 
@@ -570,7 +570,7 @@ async def coffre(interaction: discord.Interaction):
 async def update(interaction: discord.Interaction):
     """Forcer la mise à jour du message coffre"""
     await update_coffre_message()
-    await interaction.response.send_message("✅ Données du coffre mises à jour !", ephemeral=True)
+    await interaction.response.send_message("✅ Données du coffre mises à jour !", ephemeral=False)
 
 # ==================== COMMANDE /TOTAL ====================
 
@@ -583,7 +583,7 @@ async def total(interaction: discord.Interaction):
     if not stats:
         await interaction.response.send_message(
             "📊 Aucune donnée disponible.",
-            ephemeral=True
+            ephemeral=False
         )
         return
     
@@ -622,7 +622,7 @@ async def paye(interaction: discord.Interaction):
     if not stats:
         await interaction.response.send_message(
             "📊 Aucune donnée de crafts disponible.",
-            ephemeral=True
+            ephemeral=False
         )
         return
     
@@ -721,7 +721,7 @@ class CraftQuantiteModal(discord.ui.Modal, title="Quantité Craftée"):
             if qte <= 0:
                 await interaction.response.send_message(
                     "❌ La quantité doit être supérieure à 0!",
-                    ephemeral=True
+                    ephemeral=False
                 )
                 return
             
@@ -755,7 +755,7 @@ class CraftQuantiteModal(discord.ui.Modal, title="Quantité Craftée"):
                 if not attachment.content_type or not attachment.content_type.startswith('image/'):
                     await interaction.followup.send(
                         "❌ Veuillez envoyer une image valide!",
-                        ephemeral=True
+                        ephemeral=False
                     )
                     return
                 
@@ -846,13 +846,13 @@ class CraftQuantiteModal(discord.ui.Modal, title="Quantité Craftée"):
             except TimeoutError:
                 await interaction.followup.send(
                     "⏱️ Temps écoulé! Veuillez réessayer la commande /craft.",
-                    ephemeral=True
+                    ephemeral=False
                 )
         
         except ValueError:
             await interaction.response.send_message(
                 "❌ Veuillez entrer un nombre valide!",
-                ephemeral=True
+                ephemeral=False
             )
 
 class CraftView(discord.ui.View):
@@ -933,18 +933,18 @@ async def virer(interaction: discord.Interaction, membre: discord.Member):
             f"• {len(roles_a_enlever)} rôle(s) enlevé(s)\n"
             f"• Pseudo réinitialisé\n"
             f"• Channel employé supprimé",
-            ephemeral=True
+            ephemeral=False
         )
         
     except discord.errors.Forbidden:
         await interaction.response.send_message(
             "❌ Je n'ai pas les permissions nécessaires pour virer ce membre.",
-            ephemeral=True
+            ephemeral=False
         )
     except Exception as e:
         await interaction.response.send_message(
             f"❌ Erreur lors du renvoi: {e}",
-            ephemeral=True
+            ephemeral=False
         )
 
 # ==================== COMMANDE /INFO ====================
@@ -958,7 +958,7 @@ async def info(interaction: discord.Interaction):
     if not stats:
         await interaction.response.send_message(
             "📊 Aucune statistique disponible pour le moment.",
-            ephemeral=True
+            ephemeral=False
         )
         return
     
@@ -1015,14 +1015,14 @@ async def reset(interaction: discord.Interaction):
                 "✅ **Reset effectué !**\n\n"
                 "• Statistiques des employés effacées\n"
                 "• Le coffre n'a pas été modifié",
-                ephemeral=True
+                ephemeral=False
             )
         
         @discord.ui.button(label="❌ Annuler", style=discord.ButtonStyle.secondary)
         async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
             self.value = False
             self.stop()
-            await interaction.response.send_message("❌ Reset annulé.", ephemeral=True)
+            await interaction.response.send_message("❌ Reset annulé.", ephemeral=False)
     
     view = ConfirmResetView()
     await interaction.response.send_message(
@@ -1033,7 +1033,7 @@ async def reset(interaction: discord.Interaction):
         "**Cette action est irréversible !**\n\n"
         "Voulez-vous vraiment continuer ?",
         view=view,
-        ephemeral=True
+        ephemeral=False
     )
 
 # ==================== COMMANDE /MANUEL ====================
@@ -1232,10 +1232,10 @@ async def manuel(interaction: discord.Interaction):
     embed4.set_footer(text="Page 4/4 - Systèmes Automatiques")
     
     # Envoyer tous les embeds
-    await interaction.response.send_message(embed=embed1, ephemeral=True)
-    await interaction.followup.send(embed=embed2, ephemeral=True)
-    await interaction.followup.send(embed=embed3, ephemeral=True)
-    await interaction.followup.send(embed=embed4, ephemeral=True)
+    await interaction.response.send_message(embed=embed1, ephemeral=False)
+    await interaction.followup.send(embed=embed2, ephemeral=False)
+    await interaction.followup.send(embed=embed3, ephemeral=False)
+    await interaction.followup.send(embed=embed4, ephemeral=False)
 
 # ==================== COMMANDE /HELP ====================
 
@@ -1292,7 +1292,7 @@ async def help_command(interaction: discord.Interaction):
     
     embed1.set_footer(text="💡 Tapez /manuel pour un guide détaillé de chaque commande !")
     
-    await interaction.response.send_message(embed=embed1, ephemeral=True)
+    await interaction.response.send_message(embed=embed1, ephemeral=False)
 
 # ==================== COMMANDE /GUIDE ====================
 
@@ -1341,7 +1341,7 @@ async def guide(interaction: discord.Interaction):
     
     embed_commandes.set_footer(text="💡 Utilisez ces commandes pour contribuer au café !")
     
-    await interaction.response.send_message(embed=embed_commandes, ephemeral=True)
+    await interaction.response.send_message(embed=embed_commandes, ephemeral=False)
 
 # ==================== CONFIGURATION DES CHANNELS ET ROLES ====================
 
@@ -1415,7 +1415,7 @@ class ApplyButton(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Votre ticket de candidature a été créé: {ticket_channel.mention}",
-            ephemeral=True
+            ephemeral=False
         )
     
     @discord.ui.button(label="📄 Contrat", style=discord.ButtonStyle.secondary, custom_id="contrat_btn")
@@ -1442,7 +1442,7 @@ class ApplyButton(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Votre ticket de contrat a été créé: {ticket_channel.mention}",
-            ephemeral=True
+            ephemeral=False
         )
     
     @discord.ui.button(label="🛒 Commander", style=discord.ButtonStyle.success, custom_id="commander_btn")
@@ -1474,7 +1474,7 @@ class ApplyButton(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Votre ticket de commande a été créé: {ticket_channel.mention}",
-            ephemeral=True
+            ephemeral=False
         )
 
 class ProductSelectView(discord.ui.View):
@@ -1549,7 +1549,7 @@ class QuantityModal_Order(discord.ui.Modal, title="Quantité"):
             if quantity <= 0:
                 await interaction.response.send_message(
                     "❌ La quantité doit être supérieure à 0!",
-                    ephemeral=True
+                    ephemeral=False
                 )
                 return
             
@@ -1558,7 +1558,7 @@ class QuantityModal_Order(discord.ui.Modal, title="Quantité"):
         except ValueError:
             await interaction.response.send_message(
                 "❌ Veuillez entrer un nombre valide!",
-                ephemeral=True
+                ephemeral=False
             )
 
 class OrderActionView(discord.ui.View):
@@ -1815,12 +1815,12 @@ class OrderStatusView(discord.ui.View):
             # Confirmer la prise en charge à l'employé
             await interaction.followup.send(
                 f"✅ Vous avez pris en charge la commande ! Un channel privé a été créé: {ticket_channel.mention}",
-                ephemeral=True
+                ephemeral=False
             )
 
         except Exception as e:
             print(f"Erreur lors de la prise en charge de la commande: {e}")
-            await interaction.followup.send(f"❌ Erreur: {e}", ephemeral=True)
+            await interaction.followup.send(f"❌ Erreur: {e}", ephemeral=False)
 
 class DeliveryCompleteView(discord.ui.View):
     """Vue pour compléter la livraison"""
@@ -1893,7 +1893,7 @@ class DeliveryCompleteView(discord.ui.View):
             
         except Exception as e:
             print(f"Erreur lors de la fermeture du channel: {e}")
-            await interaction.followup.send(f"❌ Erreur: {e}", ephemeral=True)
+            await interaction.followup.send(f"❌ Erreur: {e}", ephemeral=False)
 
 class DecisionView(discord.ui.View):
     def __init__(self, user_data):
@@ -2036,7 +2036,7 @@ class DecisionView(discord.ui.View):
         
         await interaction.response.send_message(
             f"✅ Candidature de {user.mention} acceptée ! Canal employé créé.",
-            ephemeral=True
+            ephemeral=False
         )
     
     @discord.ui.button(label="❌ Refuser", style=discord.ButtonStyle.red, custom_id="reject_cv")
@@ -2094,7 +2094,7 @@ class DecisionView(discord.ui.View):
         
         await interaction.response.send_message(
             f"❌ Candidature de {user.mention} refusée.",
-            ephemeral=True
+            ephemeral=False
         )
 
 @bot.event
@@ -2307,7 +2307,7 @@ async def rc(interaction: discord.Interaction):
     
     await interaction.response.send_message(
         "✅ Panneau de recrutement publié dans les deux channels !",
-        ephemeral=True
+        ephemeral=False
     )
 
 # Lancer le bot
