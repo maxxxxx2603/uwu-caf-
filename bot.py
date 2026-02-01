@@ -1972,6 +1972,13 @@ class DecisionView(discord.ui.View):
         except Exception as e:
             print(f"Erreur lors de l'envoi du DM: {e}")
 
+        # Supprimer le message CV après 2 secondes
+        await discord.utils.sleep_until(discord.utils.utcnow() + timedelta(seconds=2))
+        try:
+            await interaction.message.delete()
+        except Exception as e:
+            print(f"Erreur lors de la suppression du message CV: {e}")
+
 
 
 
